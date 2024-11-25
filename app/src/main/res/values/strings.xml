@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">MyApplicationWebService</string>
+    <string name="pokemones">Pokemones</string>
+    <string name="Name">Precio:</string>
+    <string name="category">Categoría:</string>
+    <string name="title">Titulo:</string>
+    <string-array name="lista">
+        <item>Opción 1</item>
+        <item>Opción 2</item>
+    </string-array>
+    <string name="title_activity_product">ProductActivity</string>
+    <string name="go_to_product">Detalle Pokemon</string>
+    <string name="title_activity_usuarios">UsuariosActivity</string>
+</resources>
