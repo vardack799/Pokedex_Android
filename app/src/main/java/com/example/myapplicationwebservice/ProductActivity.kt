@@ -58,7 +58,9 @@ import androidx.compose.ui.unit.sp
 import com.example.myapplicationwebservice.components.ImageWeb
 import com.example.myapplicationwebservice.services.driverAdapters.DescriptionDiverAdapter
 import com.example.myapplicationwebservice.services.driverAdapters.SpriteDiverAdapter
+import com.example.myapplicationwebservice.services.models.EvolutionChain
 import com.example.myapplicationwebservice.services.models.FlavorTextAndLanguage
+import com.example.myapplicationwebservice.services.models.FlavorTextEntries
 import com.example.myapplicationwebservice.services.models.OfficialArtwork
 import com.example.myapplicationwebservice.services.models.Other
 import com.example.myapplicationwebservice.services.models.PokemonResponse
@@ -94,7 +96,7 @@ class ProductActivity : ComponentActivity() {
             var pokemonSprite by remember { mutableStateOf<PokemonResponse>( PokemonResponse(
                 emptyList(),0,"",Sprites(Other(OfficialArtwork(""))), emptyList(), emptyList()))}
             var loadProducts by remember { mutableStateOf<Boolean>(false) }
-            var description by remember { mutableStateOf<List<FlavorTextAndLanguage>>(emptyList()) }
+            var description by remember { mutableStateOf<FlavorTextEntries>(FlavorTextEntries(EvolutionChain(""), emptyList())) }
             var descriptionText by remember { mutableStateOf<String>("") }
             var iterator = 0;
 
@@ -122,15 +124,16 @@ class ProductActivity : ComponentActivity() {
                 )
             }
 
-            if (description.isNotEmpty()) {
+            if (description.flavorTextEntries.isNotEmpty()) {
                 do {
-                    if (description[iterator].language.name == "es") {
-                        descriptionText = description[iterator].flavorText
+
+                    if (description.flavorTextEntries[iterator].language.name == "es") {
+                        descriptionText = description.flavorTextEntries[iterator].flavorText
                         println(descriptionText)
                         break
                     }
                     iterator++
-                } while (descriptionText.isEmpty())
+                } while (descriptionText.isEmpty() || iterator < description.flavorTextEntries.size)
             println(idPokemon)
                 val scrollState = rememberScrollState()
      pokemonScreen(pokemonSprite = pokemonSprite,region = regionPok,description = descriptionText,scrollState = scrollState)

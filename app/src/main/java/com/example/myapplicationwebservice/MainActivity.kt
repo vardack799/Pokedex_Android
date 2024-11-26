@@ -22,6 +22,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -79,6 +80,20 @@ class MainActivity : ComponentActivity() {
 //            ))
             var pokemons by remember { mutableStateOf<List<CaracPokemon>>(emptyList()) }
             var loadProducts by remember { mutableStateOf<Boolean>(false) }
+
+            val regions = listOf(
+                "todos",
+                "Kanto",
+                "Johto",
+                "Hoenn",
+                "Sinnoh",
+                "Unova",
+                "Kalos",
+                "Alola",
+                "Galar",
+                "Paldea"
+            )
+
             if (!loadProducts) {
                 this.productsDiverAdapter.allProducts(
                     loadData = {
@@ -102,7 +117,7 @@ class MainActivity : ComponentActivity() {
                 }
 
             }
-            ProductsScreen(    spriteDiverAdapter = spriteDiverAdapter,pokemons = pokemons, onClickProduct = { goToDetail(id = it) })
+            ProductsScreen(    spriteDiverAdapter = spriteDiverAdapter,pokemons = pokemons, onClickProduct = { goToDetail(id = it) },regions = regions)
         }
     }
 
@@ -121,17 +136,29 @@ class MainActivity : ComponentActivity() {
 fun ProductsScreen(
     spriteDiverAdapter: SpriteDiverAdapter,
     pokemons: List<CaracPokemon>,
-    onClickProduct: (name: String) -> Unit
+    onClickProduct: (name: String) -> Unit,
+    regions: List<String>
 ) {
+
+
     var searchQuery by remember { mutableStateOf("") }
+    var selectedRegion by remember { mutableStateOf("todos") }
 
     // Filtrar los pokemons directamente
-    val filteredPokemons = if (searchQuery.isBlank()) {
-        pokemons
-    } else {
-        pokemons.filter {
-            it.name.contains(searchQuery, ignoreCase = true) ||
-        it.url.contains(searchQuery, ignoreCase = true)}
+    val filteredPokemons = pokemons.filter { pokemon ->
+        (searchQuery.isBlank() || pokemon.name.contains(searchQuery, ignoreCase = true) || pokemon.url.contains(searchQuery, ignoreCase = true)) &&
+                (selectedRegion == "todos" || when (selectedRegion) {
+                    "Kanto" -> pokemon.url.toInt() in 1..151
+                    "Johto" -> pokemon.url.toInt() in 152..251
+                    "Hoenn" -> pokemon.url.toInt() in 252..386
+                    "Sinnoh" -> pokemon.url.toInt() in 387..493
+                    "Unova" -> pokemon.url.toInt() in 494..649
+                    "Kalos" -> pokemon.url.toInt() in 650..721
+                    "Alola" -> pokemon.url.toInt() in 722..809
+                    "Galar" -> pokemon.url.toInt() in 810..905
+                    "Paldea" -> pokemon.url.toInt() in 906..1010
+                    else -> false
+                })
     }
 
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -168,6 +195,18 @@ fun ProductsScreen(
  }
                     )
                 )
+                LazyRow() {
+                    items(regions) {
+                        Button(
+                            onClick = { selectedRegion = it },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = if (selectedRegion == it) MaterialTheme.colorScheme.primary else  MaterialTheme.colorScheme.inversePrimary
+                            )
+                        ) {
+                            Text(text = it)
+                        }
+                    }
+                }
                 LazyVerticalGrid(
                     modifier = Modifier.fillMaxSize(),
                     contentPadding = PaddingValues(vertical = 16.dp, horizontal = 8.dp),
@@ -222,6 +261,7 @@ fun ProductsScreenPreview() {
     ProductsScreen(
         spriteDiverAdapter = SpriteDiverAdapter(),
         pokemons = emptyList(),
-        onClickProduct = {}
+        onClickProduct = {},
+        regions = emptyList()
     )
 }

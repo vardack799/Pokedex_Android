@@ -7,6 +7,7 @@ import com.example.myapplicationwebservice.services.models.Ability
 import com.example.myapplicationwebservice.services.models.AbilityWrapper
 import com.example.myapplicationwebservice.services.models.CaracPokemon
 import com.example.myapplicationwebservice.services.models.FlavorTextAndLanguage
+import com.example.myapplicationwebservice.services.models.FlavorTextEntries
 import com.example.myapplicationwebservice.services.models.OfficialArtwork
 import com.example.myapplicationwebservice.services.models.PokemonResponse
 import com.example.myapplicationwebservice.services.models.Sprites
@@ -45,7 +46,7 @@ class DescriptionDiverAdapter {
 
     fun allDescription(
         id: String,
-        loadData: (desciption: List<FlavorTextAndLanguage>) -> Unit,
+        loadData: (desciption: FlavorTextEntries) -> Unit,
         onError: () -> Unit
     ) {
         this.service.getDescription(

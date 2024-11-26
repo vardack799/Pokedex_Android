@@ -7,6 +7,7 @@ import com.example.myapplicationwebservice.services.endpoints.ProductsEndpoints
 import com.example.myapplicationwebservice.services.models.Ability
 import com.example.myapplicationwebservice.services.models.AbilityWrapper
 import com.example.myapplicationwebservice.services.models.CaracPokemon
+import com.example.myapplicationwebservice.services.models.EvolutionChain
 import com.example.myapplicationwebservice.services.models.FlavorTextAndLanguage
 import com.example.myapplicationwebservice.services.models.FlavorTextEntries
 import com.example.myapplicationwebservice.services.models.OfficialArtwork
@@ -75,7 +76,7 @@ class DescriptionServices : BaseService() {
 
     fun getDescription(
         id:String,
-        success: (description: List<FlavorTextAndLanguage>) -> Unit,
+        success: (description: FlavorTextEntries) -> Unit,
         error: () -> Unit
     ) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -87,8 +88,8 @@ class DescriptionServices : BaseService() {
                 val data = response.body()
                 println(data)
                 when (data) {
-                    null -> success( emptyList())
-                    else -> success(data.flavorTextEntries)
+                    null -> success(FlavorTextEntries(EvolutionChain(""), emptyList()))
+                    else -> success(data)
                 }
             } catch (e: Exception) {
                 println("peerra ${e}")
