@@ -1,14 +1,14 @@
 package com.example.myapplicationwebservice.services.controllers
 
-import androidx.collection.emptyObjectList
 import androidx.lifecycle.viewModelScope
 import com.example.myapplicationwebservice.services.endpoints.ProductsEndpoints
 
-import com.example.myapplicationwebservice.services.models.Ability
-import com.example.myapplicationwebservice.services.models.AbilityWrapper
+
 import com.example.myapplicationwebservice.services.models.CaracPokemon
+import com.example.myapplicationwebservice.services.models.Chain
+import com.example.myapplicationwebservice.services.models.EvolChain
 import com.example.myapplicationwebservice.services.models.EvolutionChain
-import com.example.myapplicationwebservice.services.models.FlavorTextAndLanguage
+
 import com.example.myapplicationwebservice.services.models.FlavorTextEntries
 import com.example.myapplicationwebservice.services.models.OfficialArtwork
 import com.example.myapplicationwebservice.services.models.Other
@@ -30,7 +30,7 @@ class ProductsServices : BaseService() {
                     .create(ProductsEndpoints::class.java)
                     .getAllProducts()
                 val data = response.body()
-                println(data)
+
                 when (data) {
                     null -> success(emptyList())
                     else -> success(data.results)
@@ -57,7 +57,7 @@ class SpriteServices : BaseService() {
                     .getAbility(name)
                 println(response.body())
                 val data = response.body()
-                println(data)
+
                 when (data) {
                     null -> success( PokemonResponse( emptyList(),0,"",Sprites(Other(OfficialArtwork(""))), emptyList(),
                         emptyList()
@@ -65,7 +65,7 @@ class SpriteServices : BaseService() {
                     else -> success(data)
                 }
             } catch (e: Exception) {
-                println("peerra ${e}")
+
                 error()
             }
         }
@@ -84,15 +84,40 @@ class DescriptionServices : BaseService() {
                 val response = getRetrofit()
                     .create(ProductsEndpoints::class.java)
                     .getDescription(id)
-                println(response.body())
+
                 val data = response.body()
-                println(data)
+
                 when (data) {
                     null -> success(FlavorTextEntries(EvolutionChain(""), emptyList()))
                     else -> success(data)
                 }
             } catch (e: Exception) {
-                println("peerra ${e}")
+
+                error()
+            }
+        }
+    }
+}
+class EvolutionServices : BaseService() {
+
+    fun getEvolution(
+        id:String,
+        success: (description: EvolChain) -> Unit,
+        error: () -> Unit
+    ) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val response = getRetrofit()
+                    .create(ProductsEndpoints::class.java)
+                    .getEvolution(id)
+                val data = response.body()
+println(data)
+                when (data) {
+                    null -> success( EvolChain(Chain(emptyList())))
+                    else -> success(data)
+                }
+            } catch (e: Exception) {
+
                 error()
             }
         }

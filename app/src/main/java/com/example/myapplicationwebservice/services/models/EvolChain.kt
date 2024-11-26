@@ -10,6 +10,7 @@ data class Chain(
 )
 
 data class EvolvesTo(
+    @SerializedName("evolves_to")var evolvesTo: List<EvolvesTo>,
     var species: Species
 )
 data class Species(

@@ -1,11 +1,13 @@
 package com.example.myapplicationwebservice.services.driverAdapters
 
 import com.example.myapplicationwebservice.services.controllers.DescriptionServices
+import com.example.myapplicationwebservice.services.controllers.EvolutionServices
 import com.example.myapplicationwebservice.services.controllers.ProductsServices
 import com.example.myapplicationwebservice.services.controllers.SpriteServices
 import com.example.myapplicationwebservice.services.models.Ability
 import com.example.myapplicationwebservice.services.models.AbilityWrapper
 import com.example.myapplicationwebservice.services.models.CaracPokemon
+import com.example.myapplicationwebservice.services.models.EvolChain
 import com.example.myapplicationwebservice.services.models.FlavorTextAndLanguage
 import com.example.myapplicationwebservice.services.models.FlavorTextEntries
 import com.example.myapplicationwebservice.services.models.OfficialArtwork
@@ -50,6 +52,22 @@ class DescriptionDiverAdapter {
         onError: () -> Unit
     ) {
         this.service.getDescription(
+            id = id,
+            success = { loadData(it) },
+            error = { onError() }
+        )
+    }
+}
+
+class EvolutionDiverAdapter {
+    private val service: EvolutionServices = EvolutionServices()
+
+    fun allEvolutions(
+        id: String,
+        loadData: (desciption: EvolChain) -> Unit,
+        onError: () -> Unit
+    ) {
+        this.service.getEvolution(
             id = id,
             success = { loadData(it) },
             error = { onError() }
