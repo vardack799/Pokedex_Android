@@ -83,4 +83,6 @@ dependencies {
     testImplementation("androidx.room:room-testing:$room_version")
     implementation("androidx.room:room-paging:$room_version")
 
+    implementation ("com.google.accompanist:accompanist-flowlayout:0.24.13-rc")
+
 }
