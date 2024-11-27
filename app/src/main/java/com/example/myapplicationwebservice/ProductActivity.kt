@@ -665,6 +665,7 @@ class ProductActivity : ComponentActivity() {
                             )
                         )
                         Spacer(modifier = Modifier.height(8.dp)) // Añade espacio entre el texto y la imagen
+                        println(pokemonSprite.types)
                         var types = pokemonSprite.types.map {
                             when (it.type.name) {
                                 "grass" -> "Planta"
@@ -682,7 +683,8 @@ class ProductActivity : ComponentActivity() {
                                 "ghost" -> "Fantasma"
                                 "ice" -> "hielo"
                                 "dragon" -> "Dragon"
-                                else -> "no"
+                                "flying" -> "Volador"
+                                 else -> "no"
                             }
                         }.toString()
                         types = types.replace("[", "").replace("]", "")
