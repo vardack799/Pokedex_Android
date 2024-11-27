@@ -34,6 +34,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -50,6 +51,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.myapplicationwebservice.components.ImageWeb
 import com.example.myapplicationwebservice.dataBases.entities.UsuarioEntity
+import com.example.myapplicationwebservice.dataBases.viewsModels.PokemonsViewModel
 import com.example.myapplicationwebservice.dataBases.viewsModels.UsuaiosViewModel
 import com.example.myapplicationwebservice.services.driverAdapters.ProductsDiverAdapter
 import com.example.myapplicationwebservice.services.driverAdapters.SpriteDiverAdapter
@@ -67,22 +69,19 @@ class MainActivity : ComponentActivity() {
     val productsDiverAdapter by lazy { ProductsDiverAdapter() }
     val spriteDiverAdapter by lazy { SpriteDiverAdapter() }
 //    val usuariosViewModel by lazy { UsuaiosViewModel(this) }
-
+val pokemonsViewModel by lazy { PokemonsViewModel(this) }
      override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
         setContent {
-//            usuariosViewModel.saveNewUser(UsuarioEntity(
-//                id = 0,
-//                name = "Pepito",
-//                email = "pepito@test.com"
-//            ))
+
             var pokemons by remember { mutableStateOf<List<CaracPokemon>>(emptyList()) }
             var loadProducts by remember { mutableStateOf<Boolean>(false) }
 
             val regions = listOf(
                 "todos",
+                "favoritos",
                 "Kanto",
                 "Johto",
                 "Hoenn",
@@ -117,7 +116,11 @@ class MainActivity : ComponentActivity() {
                 }
 
             }
-            ProductsScreen(    spriteDiverAdapter = spriteDiverAdapter,pokemons = pokemons, onClickProduct = { goToDetail(id = it) },regions = regions)
+            ProductsScreen(    spriteDiverAdapter = spriteDiverAdapter,
+                pokemons = pokemons,
+                onClickProduct = { goToDetail(id = it) },
+                regions = regions,
+                viewModel = pokemonsViewModel)
         }
     }
 
@@ -137,30 +140,37 @@ fun ProductsScreen(
     spriteDiverAdapter: SpriteDiverAdapter,
     pokemons: List<CaracPokemon>,
     onClickProduct: (name: String) -> Unit,
-    regions: List<String>
+    regions: List<String>,
+    viewModel: PokemonsViewModel
 ) {
 
 
     var searchQuery by remember { mutableStateOf("") }
     var selectedRegion by remember { mutableStateOf("todos") }
+    val favoritePokemons by viewModel.favoritePokemons.observeAsState(emptyList())
 
     // Filtrar los pokemons directamente
-    val filteredPokemons = pokemons.filter { pokemon ->
-        (searchQuery.isBlank() || pokemon.name.contains(searchQuery, ignoreCase = true) || pokemon.url.contains(searchQuery, ignoreCase = true)) &&
-                (selectedRegion == "todos" || when (selectedRegion) {
-                    "Kanto" -> pokemon.url.toInt() in 1..151
-                    "Johto" -> pokemon.url.toInt() in 152..251
-                    "Hoenn" -> pokemon.url.toInt() in 252..386
-                    "Sinnoh" -> pokemon.url.toInt() in 387..493
-                    "Unova" -> pokemon.url.toInt() in 494..649
-                    "Kalos" -> pokemon.url.toInt() in 650..721
-                    "Alola" -> pokemon.url.toInt() in 722..809
-                    "Galar" -> pokemon.url.toInt() in 810..905
-                    "Paldea" -> pokemon.url.toInt() in 906..1010
-                    else -> false
-                })
+    val filteredPokemons = if (selectedRegion == "favoritos") {
+        favoritePokemons.map { favorite ->
+            CaracPokemon(favorite.name, favorite.id.toString())
+        }
+    } else {
+        pokemons.filter { pokemon ->
+            (searchQuery.isBlank() || pokemon.name.contains(searchQuery, ignoreCase = true) || pokemon.url.contains(searchQuery, ignoreCase = true)) &&
+                    (selectedRegion == "todos" || when (selectedRegion) {
+                        "Kanto" -> pokemon.url.toInt() in 1..151
+                        "Johto" -> pokemon.url.toInt() in 152..251
+                        "Hoenn" -> pokemon.url.toInt() in 252..386
+                        "Sinnoh" -> pokemon.url.toInt() in 387..493
+                        "Unova" -> pokemon.url.toInt() in 494..649
+                        "Kalos" -> pokemon.url.toInt() in 650..721
+                        "Alola" -> pokemon.url.toInt() in 722..809
+                        "Galar" -> pokemon.url.toInt() in 810..905
+                        "Paldea" -> pokemon.url.toInt() in 906..1010
+                        else -> false
+                    })
+        }
     }
-
     val keyboardController = LocalSoftwareKeyboardController.current
     MyApplicationWebServiceTheme {
         Scaffold(
@@ -262,6 +272,7 @@ fun ProductsScreenPreview() {
         spriteDiverAdapter = SpriteDiverAdapter(),
         pokemons = emptyList(),
         onClickProduct = {},
-        regions = emptyList()
+        regions = emptyList(),
+        viewModel = PokemonsViewModel(MainActivity())
     )
 }
