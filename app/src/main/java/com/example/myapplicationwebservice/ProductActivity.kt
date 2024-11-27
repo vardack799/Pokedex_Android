@@ -684,144 +684,144 @@ class ProductActivity : ComponentActivity() {
 
                     }
 
-//                Column(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .padding(16.dp) // Añade padding externo para darle espacio a la tarjeta
-//                        .clip(RoundedCornerShape(8.dp))
-//                        .background(MaterialTheme.colorScheme.inversePrimary)
-//                        .padding(16.dp), // Añade padding interno para contenido dentro de la tarjeta
-//                    verticalArrangement = Arrangement.Center, // Centra los elementos verticalmente en la columna
-//                    horizontalAlignment = Alignment.CenterHorizontally // Centra los elementos horizontalmente dentro de la columna
-//                ) {
-//                    Text(
-//                        text = "EVOLUCIONES",
-//                        style = TextStyle(
-//                            fontFamily = PokemonFont,
-//                            fontSize = 28.sp,
-//                            color = colorResource(R.color.yellow)
-//                        )
-//                    )
-//
-//                    for (evolution in evolutions) {
-//
-//                        Card(modifier = Modifier.padding(8.dp)) {
-//                            Column(
-//                                modifier = Modifier
-//                                    .padding(16.dp)
-//                                    .fillMaxHeight(), // Asegura que la columna ocupe toda la altura disponible
-//                                horizontalAlignment = Alignment.CenterHorizontally, // Centra horizontalmente el contenido de la tarjeta
-//                                verticalArrangement = Arrangement.Center // Centra verticalmente dentro de cada tarjeta
-//                            ) {
-//                                var pokemonSprite by remember {
-//                                    mutableStateOf<PokemonResponse?>(
-//                                        null
-//                                    )
-//                                }
-//
-//                                LaunchedEffect(evolution.species.name) {
-//                                    spriteDiverAdapter.allAbility(
-//                                        name = evolution.species.name,
-//                                        loadData = {
-//                                            pokemonSprite = it
-//                                        },
-//                                        onError = {
-//                                            pokemonSprite = PokemonResponse(
-//                                                emptyList(),
-//                                                0,
-//                                                "",
-//                                                Sprites(Other(OfficialArtwork(""))),
-//                                                emptyList(),
-//                                                emptyList()
-//                                            )
-//                                        }
-//                                    )
-//                                }
-//
-//                                // Nombre del Pokémon
-//                                Row {
-//                                    Text(
-//                                        text = evolution.species.name,
-//                                        textAlign = TextAlign.Center
-//                                    )
-//                                }
-//
-//                                // Imagen del sprite
-//                                ImageWeb(
-//                                    url = pokemonSprite?.sprites?.other?.officialArtwork?.frontDefault
-//                                        ?: ""
-//                                )
-//
-//                                var id = evolution.species.url.split("/").dropLast(1).last()
-//
-//                                Button(onClick = { onClickProduct(id.toString()) }) {
-//                                    Text(text = stringResource(id = R.string.go_to_product))
-//                                }
-//                            }
-//                        }
-//                    }
-//
-//                    val evolutionAdd = evolutions.flatMap { it.evolvesTo.map { evolution ->
-//                        // Extraer el nombre y el ID de la URL
-//                        val speciesName = evolution.species.name
-//                        val speciesId = evolution.species.url.split("/").dropLast(1).last() // Extrae el ID de la URL
-//
-//                        speciesName to speciesId // Devuelve un par (name, id)
-//                    } }
-//
-//                    for ((pokemonName, pokemonId) in evolutionAdd) {
-//
-//                        Card(modifier = Modifier.padding(8.dp)) {
-//                            Column(
-//                                modifier = Modifier
-//                                    .padding(16.dp)
-//                                    .fillMaxHeight(), // Asegura que la columna ocupe toda la altura disponible
-//                                horizontalAlignment = Alignment.CenterHorizontally, // Centra horizontalmente el contenido de la tarjeta
-//                                verticalArrangement = Arrangement.Center // Centra verticalmente dentro de cada tarjeta
-//                            ) {
-//                                var pokemonSprite by remember {
-//                                    mutableStateOf<PokemonResponse?>(
-//                                        null
-//                                    )
-//                                }
-//
-//                                LaunchedEffect(pokemonName) {
-//                                    spriteDiverAdapter.allAbility(
-//                                        name = pokemonName, // Usamos el nombre del Pokémon directamente
-//                                        loadData = {
-//                                            pokemonSprite = it
-//                                        },
-//                                        onError = {
-//                                            pokemonSprite = PokemonResponse(
-//                                                emptyList(),
-//                                                0,
-//                                                "",
-//                                                Sprites(Other(OfficialArtwork(""))),
-//                                                emptyList(),
-//                                                emptyList()
-//                                            )
-//                                        }
-//                                    )
-//                                }
-//
-//                                // Nombre del Pokémon
-//                                Row {
-//                                    Text(text = pokemonName, textAlign = TextAlign.Center)
-//                                }
-//
-//                                // Imagen del sprite
-//                                ImageWeb(
-//                                    url = pokemonSprite?.sprites?.other?.officialArtwork?.frontDefault
-//                                        ?: ""
-//                                )
-//
-//                                Button(onClick = { onClickProduct(pokemonId.toString()) }) {
-//                                    Text(text = stringResource(id = R.string.go_to_product))
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp) // Añade padding externo para darle espacio a la tarjeta
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(MaterialTheme.colorScheme.inversePrimary)
+                        .padding(16.dp), // Añade padding interno para contenido dentro de la tarjeta
+                    verticalArrangement = Arrangement.Center, // Centra los elementos verticalmente en la columna
+                    horizontalAlignment = Alignment.CenterHorizontally // Centra los elementos horizontalmente dentro de la columna
+                ) {
+                    Text(
+                        text = "EVOLUCIONES",
+                        style = TextStyle(
+                            fontFamily = PokemonFont,
+                            fontSize = 28.sp,
+                            color = colorResource(R.color.yellow)
+                        )
+                    )
+
+                    for (evolution in evolutions) {
+
+                        Card(modifier = Modifier.padding(8.dp)) {
+                            Column(
+                                modifier = Modifier
+                                    .padding(16.dp)
+                                    .fillMaxHeight(), // Asegura que la columna ocupe toda la altura disponible
+                                horizontalAlignment = Alignment.CenterHorizontally, // Centra horizontalmente el contenido de la tarjeta
+                                verticalArrangement = Arrangement.Center // Centra verticalmente dentro de cada tarjeta
+                            ) {
+                                var pokemonSprite by remember {
+                                    mutableStateOf<PokemonResponse?>(
+                                        null
+                                    )
+                                }
+
+                                LaunchedEffect(evolution.species.name) {
+                                    spriteDiverAdapter.allAbility(
+                                        name = evolution.species.name,
+                                        loadData = {
+                                            pokemonSprite = it
+                                        },
+                                        onError = {
+                                            pokemonSprite = PokemonResponse(
+                                                emptyList(),
+                                                0,
+                                                "",
+                                                Sprites(Other(OfficialArtwork(""))),
+                                                emptyList(),
+                                                emptyList()
+                                            )
+                                        }
+                                    )
+                                }
+
+                                // Nombre del Pokémon
+                                Row {
+                                    Text(
+                                        text = evolution.species.name,
+                                        textAlign = TextAlign.Center
+                                    )
+                                }
+
+                                // Imagen del sprite
+                                ImageWeb(
+                                    url = pokemonSprite?.sprites?.other?.officialArtwork?.frontDefault
+                                        ?: ""
+                                )
+
+                                var id = evolution.species.url.split("/").dropLast(1).last()
+
+                                Button(onClick = { onClickProduct(id.toString()) }) {
+                                    Text(text = stringResource(id = R.string.go_to_product))
+                                }
+                            }
+                        }
+                    }
+
+                    val evolutionAdd = evolutions.flatMap { it.evolvesTo.map { evolution ->
+                        // Extraer el nombre y el ID de la URL
+                        val speciesName = evolution.species.name
+                        val speciesId = evolution.species.url.split("/").dropLast(1).last() // Extrae el ID de la URL
+
+                        speciesName to speciesId // Devuelve un par (name, id)
+                    } }
+
+                    for ((pokemonName, pokemonId) in evolutionAdd) {
+
+                        Card(modifier = Modifier.padding(8.dp)) {
+                            Column(
+                                modifier = Modifier
+                                    .padding(16.dp)
+                                    .fillMaxHeight(), // Asegura que la columna ocupe toda la altura disponible
+                                horizontalAlignment = Alignment.CenterHorizontally, // Centra horizontalmente el contenido de la tarjeta
+                                verticalArrangement = Arrangement.Center // Centra verticalmente dentro de cada tarjeta
+                            ) {
+                                var pokemonSprite by remember {
+                                    mutableStateOf<PokemonResponse?>(
+                                        null
+                                    )
+                                }
+
+                                LaunchedEffect(pokemonName) {
+                                    spriteDiverAdapter.allAbility(
+                                        name = pokemonName, // Usamos el nombre del Pokémon directamente
+                                        loadData = {
+                                            pokemonSprite = it
+                                        },
+                                        onError = {
+                                            pokemonSprite = PokemonResponse(
+                                                emptyList(),
+                                                0,
+                                                "",
+                                                Sprites(Other(OfficialArtwork(""))),
+                                                emptyList(),
+                                                emptyList()
+                                            )
+                                        }
+                                    )
+                                }
+
+                                // Nombre del Pokémon
+                                Row {
+                                    Text(text = pokemonName, textAlign = TextAlign.Center)
+                                }
+
+                                // Imagen del sprite
+                                ImageWeb(
+                                    url = pokemonSprite?.sprites?.other?.officialArtwork?.frontDefault
+                                        ?: ""
+                                )
+
+                                Button(onClick = { onClickProduct(pokemonId.toString()) }) {
+                                    Text(text = stringResource(id = R.string.go_to_product))
+                                }
+                            }
+                        }
+                    }
+                }
 
 
                 }
