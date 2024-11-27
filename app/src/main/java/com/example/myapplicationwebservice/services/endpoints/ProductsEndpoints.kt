@@ -13,7 +13,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface ProductsEndpoints {
-    @GET("pokemon/?limit=1200")
+    @GET("pokemon/?limit=1025")
     suspend fun getAllProducts(): Response<Pokemon>
 
     @GET("pokemon/{name}")

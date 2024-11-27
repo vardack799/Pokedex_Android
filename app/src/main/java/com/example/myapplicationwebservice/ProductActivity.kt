@@ -163,16 +163,28 @@ class ProductActivity : ComponentActivity() {
 
 
             if (description.flavorTextEntries.isNotEmpty()) {
-                do {
+                try {
+                    do {
 
-                    if (description.flavorTextEntries[iterator].language.name == "es") {
-                        descriptionText = description.flavorTextEntries[iterator].flavorText
+                        if (description.flavorTextEntries[iterator].language.name == "es") {
+                            descriptionText = description.flavorTextEntries[iterator].flavorText
 
-                        break
-                    }
-                    iterator++
-                } while (descriptionText.isEmpty() || iterator < description.flavorTextEntries.size)
+                            break
+                        }
+                        iterator++
+                    } while (descriptionText.isEmpty() || iterator <= description.flavorTextEntries.size - 1)
+                }catch (e: Exception){
+                    iterator = 0
+                    do {
 
+                        if (description.flavorTextEntries[iterator].language.name == "en") {
+                            descriptionText = description.flavorTextEntries[iterator].flavorText
+
+                            break
+                        }
+                        iterator++
+                    } while (descriptionText.isEmpty() || iterator < description.flavorTextEntries.size )
+                }
                 val scrollState = rememberScrollState()
                 pokemonScreen(
                     pokemonSprite = pokemonSprite,
